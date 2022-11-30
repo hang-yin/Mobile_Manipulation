@@ -28,7 +28,7 @@ def NextState(curr_config,speed,dt,max_speed):
             speed[0,i] = -max_speed
 
     # calculate the next configuration (not yet with odometry)
-    next_config = copy.deepcopy(curr_config[0, 3:]) + speed*dt
+    arm_config = curr_config[0, 3:12] + speed*dt
 
     # calculate the next configuration with odometry
     # find change in wheel rotation
@@ -48,16 +48,14 @@ def NextState(curr_config,speed,dt,max_speed):
                         [vby]])
     else:
         dqb = np.array([[wbz], 
-                        [vbx * np.sin(wbz) + (vby * (np.cos(wbz)-1)) / wbz], 
-                        [vby * np.sin(wbz) + (vbx * (1 - np.cos(wbz))) / wbz]])
-
-    dq = np.matmul(np.array([[1,0,0], 
-                             [0, np.cos(curr_config[0]), -np.sin(curr_config[0])], 
-                             [0, np.sin(curr_config[0]), np.cos(curr_config[0])]]), 
-                   dqb)
-
-    # stack the next configuration with odometry
-    for i in range(0,3):
-        next_config[i] = curr_config[i] + dq[i][0]
+                        [(vbx * np.sin(wbz) + (vby * (np.cos(wbz)-1))) / wbz], 
+                        [(vby * np.sin(wbz) + (vbx * (1 - np.cos(wbz)))) / wbz]])
     
-    return next_config
+    dq = np.array([[1,0,0], 
+                   [0, np.cos(curr_config[0,0]), -np.sin(curr_config[0,0])], 
+                   [0, np.sin(curr_config[0,0]), np.cos(curr_config[0,0])]]).dot(dqb)
+
+    chassis_config = curr_config[0,0:3].reshape(1,3)+dq.reshape(1,3)
+
+    result = np.hstack((chassis_config,arm_config))
+    return result

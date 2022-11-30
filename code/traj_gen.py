@@ -99,5 +99,5 @@ def TrajectoryGenerator(Tse_initial,Tsc_initial,Tsc_final,Tce_grasp,Tce_standoff
     for i in gripper_closed_range:
         final_trajectory[i,12] = 1
 
-    np.savetxt("traj_output.csv", final_trajectory, delimiter=',')
+    # np.savetxt("traj_output.csv", final_trajectory, delimiter=',')
     return final_trajectory

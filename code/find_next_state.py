@@ -1,6 +1,5 @@
 import numpy as np
 import modern_robotics as mr
-import copy
 
 def NextState(curr_config,speed,dt,max_speed):
     """

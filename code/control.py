@@ -80,10 +80,3 @@ def FeedbackControl(X, Xd, Xd_next, Kp, Ki, dt):
 
 def jacobian_pseudo_inverse(J, V):
     return np.linalg.pinv(J,rcond=1e-2).dot(V)
-
-
-"""
-TODO: add joint limits
-if use_joint_limit:
-    testJointLimits(config,J_arm)
-"""

@@ -11,6 +11,8 @@ Tse_initial = np.array([[0,0,1,0],
                         [-1,0,0,0.5],
                         [0,0,0,1]])
 
+# Original Task
+
 Tsc_initial = np.array([[1,0,0,1],
                         [0,1,0,0],
                         [0,0,1,0],
@@ -20,6 +22,19 @@ Tsc_final = np.array([[0,1,0,0],
                       [-1,0,0,-1],
                       [0,0,1, 0],
                       [0,0,0,1]])
+"""
+# New Task
+
+Tsc_initial = np.array([[1,0,0,1],
+                        [0,1,0,-1],
+                        [0,0,1,0],
+                        [0,0,0,1]])
+
+Tsc_final = np.array([[0,1,0,0],
+                      [-1,0,0,0],
+                      [0,0,1, 0],
+                      [0,0,0,1]])
+"""
 
 rot = np.sqrt(2.0)/2.0
 
@@ -50,9 +65,13 @@ config_i = np.array([0.8,
                      0.0,
                      0]).reshape(1,13)
 
-# adjust Kp and Ki here!!
-Kp = 2.35
+# adjust Kp and Ki here for "best" or "overshoot" conditions
+# best: Kp = 2.5, Ki = 0
+Kp = 2.5
 Ki = 0
+# overshoot: Kp = 2.0, Ki = 50.0
+# Kp = 2.0
+# Ki = 50.0
 
 # here we loop
 dt = 0.01
@@ -100,8 +119,12 @@ for i in np.arange(np.shape(final_trajectory)[0]-1):
 config_arr = np.squeeze(config_list)
 error_list = np.squeeze(error_list)
 
+
 print("Saving data to final.csv\n")
 np.savetxt("final.csv", config_arr, delimiter=',')
+
+print("Saving error data to error.csv\n")
+np.savetxt("error.csv", error_list, delimiter=',')
 
 # plot the error
 print("Plotting error")
@@ -116,5 +139,5 @@ plt.plot(steps,error_list[:,2])
 plt.plot(steps,error_list[:,3])
 plt.plot(steps,error_list[:,4])
 plt.plot(steps,error_list[:,5])
-plt.legend([r'$w_{e1}$',r'$w_{e2}$',r'$w_{e3}$',r'$\dot{p}_{e1}$',r'$\dot{p}_{e2}$',r'$\dot{p}_{e3}$'])
+plt.legend(['Xerr0','Xerr1','Xerr2','Xerr3','Xerr4','Xerr5'])
 plt.show()

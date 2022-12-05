@@ -72,10 +72,11 @@ def FeedbackControl(X, Xd, Xd_next, Kp, Ki, dt):
     J_base = mr.Adjoint(np.linalg.inv(X1).dot(Tsb_i)).dot(F6)
 
     # if the arm joints are too close to 0, we need to set the corresponding columns of J_arm to 0
+    """
     violated_joints = testJointLimits(X)
     for joint in violated_joints:
         J_arm[:, joint] = np.zeros(6)
-
+    """
     # define Je with J_base and J_arm
     Je = np.hstack((J_base,J_arm))
 
